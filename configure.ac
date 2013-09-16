@@ -2,7 +2,7 @@ dnl Process this file with autoconf to produce a configure script.
 dnl
 
 AC_INIT([libmongo-client],[0.1.6.3],[algernon@madhouse-project.org],[libmongo-client],[https://github.com/algernon/libmongo-client])
-AM_INIT_AUTOMAKE([1.9 tar-ustar foreign no-dist-gzip dist-xz])
+AM_INIT_AUTOMAKE([1.9 tar-ustar foreign no-dist-gzip dist-xz subdir-objects])
 
 dnl ***************************************************************************
 dnl dependencies
@@ -24,6 +24,7 @@ vsymldflags="-Wl,--version-script,\${srcdir}/libmongo-client.ver -Wl,-O1"
 dnl ***************************************************************************
 dnl Checks for programs.
 AC_PROG_CC
+AC_PROG_CC_C_O
 
 AC_PROG_MAKE_SET
 PKG_PROG_PKG_CONFIG
