@@ -27,6 +27,9 @@ $(STAMPDIR)/stamp-setup:
 
 configure: $(STAMPDIR)/stamp-configure
 $(STAMPDIR)/stamp-configure: $(STAMPDIR)/stamp-setup
+ifneq (,$(findstring fips,$(TGZ_BUILD_OPTS)))
+	$(error libmongo-client cannot be built in FIPS mode...)
+endif
 	$(BUILDCMD) configure --prefix=$(ZBS_PREFIX)
 	touch $@
 
