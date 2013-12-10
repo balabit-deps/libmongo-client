@@ -13,6 +13,12 @@ authentication in a safe, memory-locked area.
 A new function was added to create users with their roles already set
 at the same time.
 
+** Bugfix: Enable subdir-objects for automake
+
+Since we have sources that reside in a subdirectory, to avoid
+conflicts and a lot of automake warnings, enable the subdir-objects
+automake option.
+
 * 0.1.6.3 - <2013-08-27 Tue>
 
 Another bugfix release with a couple of important bugfixes, and a few
