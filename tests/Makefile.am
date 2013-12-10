@@ -136,7 +136,8 @@ mongo_sync_func_tests	= \
 		func/mongo/sync/f_sync_conn_seed_add \
 		func/mongo/sync/f_sync_safe_mode \
 		func/mongo/sync/f_sync_auto_reconnect \
-		func/mongo/sync/f_sync_oidtest
+		func/mongo/sync/f_sync_oidtest \
+		func/mongo/sync/f_sync_auto_reauth
 
 mongo_sync_cursor_unit_tests	= \
 		unit/mongo/sync-cursor/sync_cursor_new \

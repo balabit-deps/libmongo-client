@@ -62,6 +62,12 @@ struct _mongo_sync_connection
   gint32 max_insert_size; /**< Maximum number of bytes an insert
                              command can be before being split to
                              smaller chunks. Used for bulk inserts. */
+  struct
+  {
+    gchar *db; /**< The database to authenticate against. */
+    gchar *user; /**< The username to authenticate with. */
+    gchar *pw; /**< The password to authenticate with. */
+  } auth; /**< Authentication credentials. These are mlock()'ed. */
 };
 
 /** @internal MongoDB cursor object.
