@@ -1,5 +1,5 @@
 /* mongo-sync.h - libmongo-client synchronous wrapper API
- * Copyright 2011, 2012 Gergely Nagy <algernon@balabit.hu>
+ * Copyright 2011, 2012, 2013 Gergely Nagy <algernon@balabit.hu>
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -468,6 +468,22 @@ gboolean mongo_sync_cmd_user_add (mongo_sync_connection *conn,
                                   const gchar *db,
                                   const gchar *user,
                                   const gchar *pw);
+
+/** Add a user to MongoDB, with roles.
+ *
+ * @param conn is the connection to work with.
+ * @param db is the database to add the user to.
+ * @param user is the user to add.
+ * @param pw is the password.
+ * @param roles is a BSON array containing the roles for the user.
+ *
+ * @returns TRUE on success, FALSE otherwise.
+ */
+gboolean mongo_sync_cmd_user_add_with_roles (mongo_sync_connection *conn,
+                                             const gchar *db,
+                                             const gchar *user,
+                                             const gchar *pw,
+                                             const bson *roles);
 
 /** Remove a user from MongoDB.
  *

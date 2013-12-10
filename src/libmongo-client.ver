@@ -36,3 +36,7 @@ LMC_0.1.6 {
     mongo_tcp_connect;
     mongo_sync_connect_0_1_0;
 } LMC_0.1.3;
+
+LMC_0.1.7 {
+  mongo_sync_cmd_user_add_with_roles;
+} LMC_0.1.6;

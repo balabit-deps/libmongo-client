@@ -1487,10 +1487,11 @@ _pass_digest (const gchar *user, const gchar *pw)
 }
 
 gboolean
-mongo_sync_cmd_user_add (mongo_sync_connection *conn,
-                         const gchar *db,
-                         const gchar *user,
-                         const gchar *pw)
+mongo_sync_cmd_user_add_with_roles (mongo_sync_connection *conn,
+                                    const gchar *db,
+                                    const gchar *user,
+                                    const gchar *pw,
+                                    const bson *roles)
 {
   bson *s, *u;
   gchar *userns;
@@ -1513,6 +1514,8 @@ mongo_sync_cmd_user_add (mongo_sync_connection *conn,
                        bson_build (BSON_TYPE_STRING, "pwd", hex_digest, -1,
                                    BSON_TYPE_NONE),
                        BSON_TYPE_NONE);
+  if (roles)
+    bson_append_array (u, "roles", roles);
   bson_finish (u);
   g_free (hex_digest);
 
@@ -1532,6 +1535,15 @@ mongo_sync_cmd_user_add (mongo_sync_connection *conn,
   g_free (userns);
 
   return TRUE;
+}
+
+gboolean
+mongo_sync_cmd_user_add (mongo_sync_connection *conn,
+                         const gchar *db,
+                         const gchar *user,
+                         const gchar *pw)
+{
+  return mongo_sync_cmd_user_add_with_roles (conn, db, user, pw, NULL);
 }
 
 gboolean

@@ -125,6 +125,7 @@ mongo_sync_unit_tests	= \
 		unit/mongo/sync/sync_cmd_is_master \
 		unit/mongo/sync/sync_cmd_ping \
 		unit/mongo/sync/sync_cmd_user_add \
+		unit/mongo/sync/sync_cmd_user_add_with_roles \
 		unit/mongo/sync/sync_cmd_user_remove \
 		unit/mongo/sync/sync_cmd_authenticate \
 		unit/mongo/sync/sync_cmd_index_create \
