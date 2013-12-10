@@ -17,7 +17,6 @@ test_func_mongo_sync_auto_reauth (void)
 {
   mongo_sync_connection *conn;
   bson *b;
-  mongo_packet *p;
 
   b = bson_new ();
   bson_append_int32 (b, "f_sync_auto_reauth", 1);
