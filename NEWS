@@ -1,5 +1,18 @@
 #+STARTUP: indent showall			-*- org -*-
 
+* 0.1.7 - UNRELEASED
+
+** Feature: Automatic re-authentication
+
+This release adds support for automatically re-authenticating when
+reconnecting, by storing the credentials used for the last
+authentication in a safe, memory-locked area.
+
+** New function: mongo_sync_cmd_user_add_with_roles()
+
+A new function was added to create users with their roles already set
+at the same time.
+
 * 0.1.6.3 - <2013-08-27 Tue>
 
 Another bugfix release with a couple of important bugfixes, and a few
