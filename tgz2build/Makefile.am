@@ -1,1 +1,1 @@
-EXTRA_DIST=glib.files rules
+EXTRA_DIST=libmongo-client-dev.files rules
