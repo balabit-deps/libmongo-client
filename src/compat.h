@@ -19,10 +19,12 @@
 
 #include "config.h"
 
+#include <sys/types.h>
+#include <sys/socket.h>
+
 #if WITH_OPENSSL
 
 #include <openssl/md5.h>
-#include <sys/types.h>
 
 typedef enum {
   G_CHECKSUM_MD5,
@@ -40,5 +42,9 @@ void g_checksum_update (GChecksum *checksum,
 const char *g_checksum_get_string (GChecksum *checksum);
 
 #endif /* WITH_OPENSSL */
+
+#ifndef MSG_WAITALL
+#define MSG_WAITALL 0x40
+#endif
 
 #endif
