@@ -36,7 +36,7 @@ endif
 build: $(STAMPDIR)/stamp-build
 $(STAMPDIR)/stamp-build: $(STAMPDIR)/stamp-configure
 	$(BUILDCMD) make
-	$(BUILDCMD) make check
+	$(BUILDCMD) make check PROVE='./runall'
 	touch $@
 
 install:  $(STAMPDIR)/stamp-install
