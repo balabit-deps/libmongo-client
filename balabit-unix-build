@@ -3,6 +3,7 @@
 fips=${ENABLE_FIPS:-false}
 
 MAKE=${MAKE:-make}
+SHELL=${SHELL:-/bin/bash}
 
 if $fips; then
     echo "FIPS is enabled!!!"
@@ -28,7 +29,7 @@ case "$cmd" in
     sh autogen.sh
     ;;
   configure)
-    ./configure  --enable-utf8 --enable-unicode-properties --disable-cpp $@
+    $SHELL ./configure SHELL=$SHELL $@
     ;;
   make)
     $MAKE $@
