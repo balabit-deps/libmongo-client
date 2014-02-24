@@ -10,7 +10,7 @@ for test in $@; do
     if grep -q "not ok" current-test.out; then
             echo "${test} failed:" >&2
             cat current-test.err >&2
-            fail_counter=$(expr ${fail_counter} + 1)
+            fail_counter=`expr ${fail_counter} + 1`
     fi
 done
 
