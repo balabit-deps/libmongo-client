@@ -1,3 +1,9 @@
+libmongo-client (0.1.7.syslogng51) syslogngdeps51; urgency=low
+
+  * Merged 0.1.7 and fixed compilation errors on ancient Unices.
+
+ -- Tusa Viktor <tusa@tusa.balabit>  Mon, 10 Mar 2014 16:38:42 +0100
+
 libmongo-client (0.1.6) syslogng50; urgency=low
 
   * Initial import.
