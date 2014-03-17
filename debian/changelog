@@ -1,3 +1,9 @@
+libmongo-client (0.1.7.syslogng51.1) syslogngdeps51; urgency=low
+
+  * Changed packaging to split into two binary packages
+
+ -- Tusa Viktor <tusa@tusa.balabit>  Mon, 17 Mar 2014 17:41:59 +0100
+
 libmongo-client (0.1.7.syslogng51) syslogngdeps51; urgency=low
 
   * Merged 0.1.7 and fixed compilation errors on ancient Unices.
