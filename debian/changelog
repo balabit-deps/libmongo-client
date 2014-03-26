@@ -1,3 +1,9 @@
+libmongo-client (0.1.7.1.syslogng51.2) syslogngdeps51; urgency=low
+
+  * merged upstream 0.1.7.1
+
+ --  Laszlo Budai <lbudai@balabit.hu>  Wed, 26 Mar 2014 12:58:58 +0100
+
 libmongo-client (0.1.7.syslogng51.1) syslogngdeps51; urgency=low
 
   * Changed packaging to split into two binary packages
