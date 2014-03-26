@@ -5,6 +5,11 @@
 #include <glib.h>
 #include <string.h>
 
+#ifndef HAVE_MSG_NOSIGNAL
+#include <signal.h>
+#endif
+
+
 func_config_t config;
 
 bson *
@@ -167,4 +172,12 @@ test_env_free (void)
   g_free (config.coll);
   g_free (config.ns);
   g_free (config.gfs_prefix);
+}
+
+void
+test_main_setup (void)
+{
+  #ifndef HAVE_MSG_NOSIGNAL
+  signal(SIGPIPE, SIG_IGN);
+  #endif
 }

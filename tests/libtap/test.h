@@ -40,6 +40,7 @@ extern func_config_t config;
   int                  \
   main (void)          \
   {                    \
+    test_main_setup(); \
     plan (n);          \
     test_##t ();       \
     return 0;          \
@@ -47,11 +48,13 @@ extern func_config_t config;
 
 gboolean test_env_setup (void);
 void test_env_free (void);
+void test_main_setup (void);
 
 #define RUN_NET_TEST(n, t)						\
   int									\
   main (void)								\
   {									\
+    test_main_setup();                                                  \
     if (!test_env_setup ())						\
       printf ("1..0 # skip, Environment not set up for network tests"); \
     else								\

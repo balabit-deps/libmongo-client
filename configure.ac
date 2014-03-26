@@ -51,6 +51,8 @@ fi
 AC_CACHE_CHECK(for struct sockaddr_in6, blb_cv_c_struct_sockaddr_in6,
   [AC_EGREP_HEADER([sockaddr_in6], netinet/in.h, blb_cv_c_struct_sockaddr_in6=yes,blb_cv_c_struct_sockaddr_in6=no)])
 
+AC_EGREP_HEADER([MSG_NOSIGNAL], [sys/socket.h], AC_DEFINE([HAVE_MSG_NOSIGNAL], [1], [Define to 1 when your system supports MSG_NOSIGNAL]))
+
 dnl ***************************************************************************
 dnl Checks for libraries
 AC_CHECK_FUNC(socket,,

@@ -40,7 +40,7 @@
 #include <stdlib.h>
 #include <errno.h>
 
-#ifndef MSG_NOSIGNAL
+#ifndef HAVE_MSG_NOSIGNAL
 #define MSG_NOSIGNAL 0
 #endif
 
