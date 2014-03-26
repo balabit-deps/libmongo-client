@@ -1,5 +1,23 @@
 #+STARTUP: indent showall			-*- org -*-
 
+* 0.1.7.1 - <2014-03-12 Wed>
+
+** Portability: Support HP-UX
+
+Compatibility code was added to make libmongo-client portable to HP-UX.
+
+** Portability: prove made optional
+
+On platforms where the `prove' utility is not readily available, a
+custom test runner can be used by setting the PROVE environment
+variable when running `make check'.
+
+** Bugfix: Safe-mode robustness improvement
+
+When safe mode is turned on, the code now verifies not only that
+getLastError() doesn't return an error, but also verifies that the
+command succeeds, too.
+
 * 0.1.7 - <2013-12-10 Tue>
 
 ** Feature: Automatic re-authentication

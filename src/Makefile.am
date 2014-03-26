@@ -1,5 +1,5 @@
 LMC_CURRENT			= 4
-LMC_REVISION			= 0
+LMC_REVISION			= 1
 LMC_AGE				= 4
 
 lib_LTLIBRARIES			= libmongo-client.la

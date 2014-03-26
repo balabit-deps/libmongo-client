@@ -2,6 +2,7 @@
 #include <stdlib.h>
 #include <stdarg.h>
 #include <string.h>
+#include <glib.h>
 #include "tap.h"
 
 static int expected_tests = NO_PLAN;
