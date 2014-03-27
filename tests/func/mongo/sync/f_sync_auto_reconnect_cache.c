@@ -9,7 +9,7 @@
 void
 test_func_mongo_sync_auto_reconnect_cache (void)
 {
-  mongo_sync_conn_recovery_cache cache;
+  mongo_sync_conn_recovery_cache *cache;
   mongo_sync_connection *conn;
   bson *b;
   mongo_packet *p;
@@ -22,13 +22,13 @@ test_func_mongo_sync_auto_reconnect_cache (void)
   bson_append_int32 (b, "f_sync_auto_reconnect", 1);
   bson_finish (b);
 
-  mongo_sync_conn_recovery_cache_init (&cache);
+  cache = mongo_sync_conn_recovery_cache_new ();
 
-  mongo_sync_conn_recovery_cache_seed_add (&cache,
+  mongo_sync_conn_recovery_cache_seed_add (cache,
                                            config.primary_host,
                                            config.primary_port);
 
-  conn = mongo_sync_connect_recovery_cache (&cache,
+  conn = mongo_sync_connect_recovery_cache (cache,
                                             TRUE);
 
   ok (mongo_sync_cmd_insert (conn, config.ns, b, NULL) == TRUE);
@@ -72,7 +72,7 @@ test_func_mongo_sync_auto_reconnect_cache (void)
 
   hosts = conn->rs.hosts;
 
-  ok (cache.rs.hosts == NULL,
+  ok (cache->rs.hosts == NULL,
       "cache is discarded due to connect replace during auto-reconnect");
 
   ok ((conn->rs.hosts != NULL) &&
@@ -81,12 +81,12 @@ test_func_mongo_sync_auto_reconnect_cache (void)
 
   mongo_sync_disconnect (conn);
 
-  ok ((cache.rs.hosts != NULL) &&
-      (cache.rs.hosts == hosts) &&
-      (g_list_length (cache.rs.hosts) > 0),
+  ok ((cache->rs.hosts != NULL) &&
+      (cache->rs.hosts == hosts) &&
+      (g_list_length (cache->rs.hosts) > 0),
       "cache is filled by disconnect()");
 
-  mongo_sync_conn_recovery_cache_discard (&cache);
+  mongo_sync_conn_recovery_cache_free (cache);
 
   endskip;
 

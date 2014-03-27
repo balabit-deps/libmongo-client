@@ -10,7 +10,7 @@ void
 test_func_mongo_sync_safe_mode_basics_cache (void)
 {
   mongo_sync_connection *conn;
-  mongo_sync_conn_recovery_cache cache;
+  mongo_sync_conn_recovery_cache *cache;
 
   const bson *docs[10];
   bson *b1, *b2, *b3, *b4, *cmd;
@@ -35,13 +35,13 @@ test_func_mongo_sync_safe_mode_basics_cache (void)
   docs[2] = b3;
   docs[3] = b4;
 
-  mongo_sync_conn_recovery_cache_init (&cache);
+  cache = mongo_sync_conn_recovery_cache_new ();
 
-  mongo_sync_conn_recovery_cache_seed_add (&cache,
+  mongo_sync_conn_recovery_cache_seed_add (cache,
                                            config.primary_host,
                                            config.primary_port);
 
-  conn = mongo_sync_connect_recovery_cache (&cache, FALSE);
+  conn = mongo_sync_connect_recovery_cache (cache, FALSE);
 
   /* Test inserts */
   mongo_sync_conn_set_safe_mode (conn, FALSE);
@@ -77,7 +77,7 @@ test_func_mongo_sync_safe_mode_basics_cache (void)
   bson_free (cmd);
 
   mongo_sync_disconnect (conn);
-  mongo_sync_conn_recovery_cache_discard (&cache);
+  mongo_sync_conn_recovery_cache_free (cache);
 
   bson_free (b1);
   bson_free (b2);
@@ -91,7 +91,7 @@ void
 test_func_mongo_sync_safe_mode_invalid_db_cache (void)
 {
   mongo_sync_connection *conn;
-  mongo_sync_conn_recovery_cache cache;
+  mongo_sync_conn_recovery_cache *cache;
   bson *b;
   const bson *docs[1];
 
@@ -101,13 +101,13 @@ test_func_mongo_sync_safe_mode_invalid_db_cache (void)
 
   docs[0] = b;
 
-  mongo_sync_conn_recovery_cache_init (&cache);
+  cache = mongo_sync_conn_recovery_cache_new ();
 
-  mongo_sync_conn_recovery_cache_seed_add (&cache,
+  mongo_sync_conn_recovery_cache_seed_add (cache,
                                            config.primary_host,
                                            config.primary_port);
 
-  conn = mongo_sync_connect_recovery_cache (&cache, TRUE);
+  conn = mongo_sync_connect_recovery_cache (cache, TRUE);
 
   mongo_sync_conn_set_safe_mode (conn, TRUE);
 
@@ -115,6 +115,7 @@ test_func_mongo_sync_safe_mode_invalid_db_cache (void)
       "mongo_sync_cmd_insert_n() should fail with safe mode on and an invalid NS");
 
   mongo_sync_disconnect (conn);
+  mongo_sync_conn_recovery_cache_free (cache);
   bson_free (b);
 }
 

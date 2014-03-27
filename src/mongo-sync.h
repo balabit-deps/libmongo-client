@@ -53,11 +53,17 @@ typedef struct _mongo_sync_connection mongo_sync_connection;
 /** synchronous connection recovery cache object */
 typedef struct _mongo_sync_conn_recovery_cache mongo_sync_conn_recovery_cache;
 
-/** Initialize a connection recovery cache object.
+/** Create a new connection recovery cache object.
+ *
+ * @return the newly created recovery cache object
+ */
+mongo_sync_conn_recovery_cache *mongo_sync_conn_recovery_cache_new (void);
+
+/** Free a connection recovery cache object.
  *
  * @param cache is the recovery cache object
  */
-void mongo_sync_conn_recovery_cache_init (mongo_sync_conn_recovery_cache *cache);
+void mongo_sync_conn_recovery_cache_free (mongo_sync_conn_recovery_cache *cache);
 
 /** Discards a connection recovery cache object.
  *
