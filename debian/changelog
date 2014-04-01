@@ -1,3 +1,11 @@
+libmongo-client (0.1.7.1.syslogng51.3) syslogngdeps51; urgency=low
+
+  * it is possible to use recovery cache from an external project
+  * tests: be careful when using a broken socket
+
+ --  Laszlo Budai <lbudai@balabit.hu>  Tue, 01 Apr 2014 14:12:40 +0200
+
+
 libmongo-client (0.1.7.1.syslogng51.2) syslogngdeps51; urgency=low
 
   * merged upstream 0.1.7.1
