@@ -33,15 +33,6 @@ test_mongo_utils_parse_addr (void)
   host = "deadbeef";
   port = 42;
 
-  ok (mongo_util_parse_addr ("127.0.0.1", &host, &port),
-      "mongo_util_parse_addr() works when no port is specified");
-  is (host, "127.0.0.1",
-      "Host parsed successfully");
-  cmp_ok (port, "==", 42,
-          "Port has been left alone");
-  g_free (host);
-  host = "deadbeef";
-
   ok (mongo_util_parse_addr ("127.0.0.1:27017", &host, &port),
       "mongo_util_parse_addr() can parse HOST:PORT pairs");
   is (host, "127.0.0.1",
@@ -127,16 +118,6 @@ test_mongo_utils_parse_addr (void)
         "Host is misparsed, as expected");
   cmp_ok (port, "==", 1,
           "Port is misparsed, as expected");
-  g_free (host);
-  host = "deadbeef";
-  port = 42;
-
-  ok (mongo_util_parse_addr ("[::1]", &host, &port),
-      "mongo_util_parse_addr() can handle IPv6 literals");
-  is (host, "::1",
-      "Host parsed successfully");
-  cmp_ok (port, "==", 42,
-          "Port has not been touched");
   g_free (host);
   host = "deadbeef";
   port = 42;
@@ -227,6 +208,37 @@ test_mongo_utils_parse_addr (void)
           "Failed parsing sets port to -1");
   host = "deadbeef";
   port = 42;
+
+  ok (mongo_util_parse_addr ("/var/run/mongodb/mongodb.socket",
+                             &host, &port) == TRUE,
+      "mongo_util_parse_addr() works with unix domain sockets");
+  is (host, "/var/run/mongodb/mongodb.socket",
+      "Parsing a Unix domain socket sets host to the socket name");
+  cmp_ok (port, "==", -1,
+          "Port is set to -1");
+  host = "deadbeef";
+  port = 42;
+
+  ok (mongo_util_parse_addr ("[::1]", &host, &port),
+      "mongo_util_parse_addr() can handle IPv6 literals without port set");
+  is (host, "::1",
+      "Host parsed successfully");
+  cmp_ok (port, "==", -1,
+          "Port is set to -1");
+  g_free (host);
+  host = "deadbeef";
+  port = 42;
+
+  ok (mongo_util_parse_addr ("/var/run/mongodb/mongodb.socket:-1",
+                             &host, &port) == TRUE,
+      "mongo_util_parse_addr() can parse unix domain sockets with -1 port");
+  is (host, "/var/run/mongodb/mongodb.socket",
+      "Parsing a unix domain socket sets host to the socket name");
+  cmp_ok (port, "==", -1,
+          "Parsing a unix domain socket with a port set to -1, works");
+  g_free (host);
+  host = "deadbeef";
+  port = 42;
 }
 
-RUN_TEST (67, mongo_utils_parse_addr);
+RUN_TEST (70, mongo_utils_parse_addr);
