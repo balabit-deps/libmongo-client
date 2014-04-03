@@ -1,3 +1,9 @@
+libmongo-client (0.1.7.1.syslogng51.4) syslogngdeps51; urgency=low
+
+  * merged upstream
+
+ -- Laszlo Budai <lbudai@balabit.hu>  Thu, 03 Apr 2014 13:46:39 +0200
+
 libmongo-client (0.1.7.1.syslogng51.3) syslogngdeps51; urgency=low
 
   * it is possible to use recovery cache from an external project
