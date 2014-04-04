@@ -87,21 +87,16 @@ test_func_mongo_sync_auto_reconnect_cache (void)
 
   mongo_wire_packet_free (p);
 
-  hosts = conn->rs.hosts;
+  mongo_sync_cmd_is_master (conn);
 
-  ok (cache->rs.hosts == NULL,
-      "cache is discarded due to connect replace during auto-reconnect");
+  ok (conn->rs.hosts != NULL,
+      "We have hosts in the connection's replica set.");
 
-  ok ((conn->rs.hosts != NULL) &&
-      (g_list_length (conn->rs.hosts) > 0),
-      "hosts is filled in mongo_sync_connection");
+  ok (cache->rs.hosts == NULL, "Cache is empty.");
 
   mongo_sync_disconnect (conn);
 
-  ok ((cache->rs.hosts != NULL) &&
-      (cache->rs.hosts == hosts) &&
-      (g_list_length (cache->rs.hosts) > 0),
-      "cache is filled by disconnect()");
+  ok (cache->rs.hosts != NULL, "Cache is filled by disconnect()");
 
   mongo_sync_conn_recovery_cache_free (cache);
 
