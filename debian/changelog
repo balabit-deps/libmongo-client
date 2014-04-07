@@ -1,3 +1,9 @@
+libmongo-client (0.1.7.1.syslogng51.5) syslogngdeps51; urgency=low
+
+  * failover fixes
+
+ -- Laszlo Budai <lbudai@balabit.hu>  Mon, 07 Apr 2014 10:29:42 +0200
+
 libmongo-client (0.1.7.1.syslogng51.4) syslogngdeps51; urgency=low
 
   * merged upstream
