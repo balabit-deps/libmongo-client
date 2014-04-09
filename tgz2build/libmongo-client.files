@@ -1,2 +1,2 @@
 opt/syslog-ng/lib/*.s[l,o]*
-opt/syslog-ng/bin/*
+opt/syslog-ng/lib/libmongo-client.a
