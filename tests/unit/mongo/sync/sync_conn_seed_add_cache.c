@@ -18,11 +18,6 @@ test_mongo_sync_connection_cache_seed_add (void)
                                                27017) == FALSE,
       "mongo_sync_connection_cache_seed_add() should fail with a NULL host");
 
-  ok (mongo_sync_conn_recovery_cache_seed_add (cache,
-                                               "localhost",
-                                               -1) == FALSE,
-      "mongo_sync_connection_cache_seed_add() should fail with an invalid port");
-
   mongo_sync_conn_recovery_cache_discard (cache);
 
   ok (mongo_sync_conn_recovery_cache_seed_add (cache,
@@ -33,4 +28,4 @@ test_mongo_sync_connection_cache_seed_add (void)
   mongo_sync_conn_recovery_cache_free (cache);
 }
 
-RUN_TEST (4, mongo_sync_connection_cache_seed_add);
+RUN_TEST (3, mongo_sync_connection_cache_seed_add);

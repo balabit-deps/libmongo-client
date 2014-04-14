@@ -235,14 +235,15 @@ mongo_sync_conn_seed_add (mongo_sync_connection *conn,
       errno = ENOTCONN;
       return FALSE;
     }
-  if (!host || port < 0)
+  if (!host || port < 0) 
     {
       errno = EINVAL;
       return FALSE;
     }
-
+  
   conn->rs.seeds = g_list_append (conn->rs.seeds,
                                   g_strdup_printf ("%s:%d", host, port));
+
   return TRUE;
 }
 
@@ -2069,7 +2070,7 @@ mongo_sync_conn_recovery_cache_seed_add (mongo_sync_conn_recovery_cache *cache,
                                          const gchar *host,
                                          gint port)
 {
-  if (!host || port < 0)
+  if (!host)
     {
       errno = EINVAL;
       return FALSE;
