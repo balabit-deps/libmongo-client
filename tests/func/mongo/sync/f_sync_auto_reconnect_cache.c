@@ -64,7 +64,7 @@ test_func_mongo_sync_auto_reconnect_cache (void)
   ok (mongo_sync_cmd_insert (conn, config.ns, b, NULL) == FALSE,
       "Turning off auto-reconnect works");
 
-  skip (!config.secondary_host, 5,
+  skip (!config.secondary_host, 7,
         "Secondary host not set up");
 
   shutdown (conn->super.fd, SHUT_RDWR);

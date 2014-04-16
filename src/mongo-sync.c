@@ -87,7 +87,7 @@ _copy_gchar (gpointer src, gpointer data)
 }
 
 static GList *
-_list_full_copy (GList *list)
+_list_copy_full (GList *list)
 {
   GList *new_list = NULL;
   int i;
@@ -106,8 +106,8 @@ _recovery_cache_store (mongo_sync_conn_recovery_cache *cache,
                        mongo_sync_connection *conn)
 {
   mongo_sync_conn_recovery_cache_discard (cache);
-  cache->rs.seeds = _list_full_copy (conn->rs.seeds);
-  cache->rs.hosts = _list_full_copy (conn->rs.hosts);
+  cache->rs.seeds = _list_copy_full (conn->rs.seeds);
+  cache->rs.hosts = _list_copy_full (conn->rs.hosts);
   cache->rs.primary = g_strdup (conn->rs.primary);
 
   if (conn->auth.db)
@@ -136,8 +136,8 @@ static void
 _recovery_cache_load (mongo_sync_conn_recovery_cache *cache,
                       mongo_sync_connection *conn)
 {
-  conn->rs.seeds = _list_full_copy (cache->rs.seeds);
-  conn->rs.hosts = _list_full_copy (cache->rs.hosts);
+  conn->rs.seeds = _list_copy_full (cache->rs.seeds);
+  conn->rs.hosts = _list_copy_full (cache->rs.hosts);
   conn->rs.primary = g_strdup (cache->rs.primary);
 
   _mongo_auth_prop_destroy (&conn->auth.db);
@@ -411,18 +411,16 @@ mongo_sync_disconnect (mongo_sync_connection *conn)
 
   g_free (conn->last_error);
 
-  if (!conn->recovery_cache)
-    {
-      _mongo_auth_prop_destroy (&conn->auth.db);
-      _mongo_auth_prop_destroy (&conn->auth.user);
-      _mongo_auth_prop_destroy (&conn->auth.pw);
-
-      _replica_set_free (&conn->rs);
-    }
-  else
+  if (conn->recovery_cache)
     {
       _recovery_cache_store (conn->recovery_cache, conn);
     }
+
+  _mongo_auth_prop_destroy (&conn->auth.db);
+  _mongo_auth_prop_destroy (&conn->auth.user);
+  _mongo_auth_prop_destroy (&conn->auth.pw);
+
+  _replica_set_free (&conn->rs);
 
   mongo_disconnect ((mongo_connection *)conn);
 }
@@ -2127,6 +2125,7 @@ mongo_sync_connect_recovery_cache (mongo_sync_conn_recovery_cache *cache,
     {
       if ( (c = _recovery_cache_connect (cache, host, port, slaveok)) )
         {
+          g_free (host);
           if (slaveok)
             return c;
           mongo_sync_conn_recovery_cache_discard (c->recovery_cache);

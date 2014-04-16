@@ -64,6 +64,7 @@ test_func_mongo_sync_safe_mode_basics_cache (void)
   ok (p == NULL && strcmp (error, "no such cmd: bogusCommand") == 0,
       "mongo_sync_cmd_custom() with a bogus command fails with safe-mode off");
   bson_free (cmd);
+  g_free (error);
 
   cmd = bson_new ();
   bson_append_int32 (cmd, "bogusCommand2", 1);
@@ -75,6 +76,7 @@ test_func_mongo_sync_safe_mode_basics_cache (void)
   ok (p == NULL && strcmp (error, "no such cmd: bogusCommand2") == 0,
       "mongo_sync_cmd_custom() with a bogus command fails with safe-mode on");
   bson_free (cmd);
+  g_free (error);
 
   mongo_sync_disconnect (conn);
   mongo_sync_conn_recovery_cache_free (cache);
