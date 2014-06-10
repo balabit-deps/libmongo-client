@@ -1,3 +1,9 @@
+libmongo-client (0.1.7.1.syslogng52.1) syslogng52; urgency=low
+
+  * release for syslog-ng-5.2
+
+ -- jviktor <jviktor@devel-57>  Tue, 10 Jun 2014 14:14:27 +0200
+
 libmongo-client (0.1.7.1.syslogng51.6) syslogngdeps51; urgency=low
 
   * upstream merged
