@@ -1,7 +1,7 @@
 dnl Process this file with autoconf to produce a configure script.
 dnl
 
-AC_INIT([libmongo-client],[0.1.7.1],[algernon@madhouse-project.org],[libmongo-client],[https://github.com/algernon/libmongo-client])
+AC_INIT([libmongo-client],[0.1.8],[algernon@madhouse-project.org],[libmongo-client],[https://github.com/algernon/libmongo-client])
 AM_INIT_AUTOMAKE([1.9 tar-ustar foreign no-dist-gzip dist-xz subdir-objects])
 
 dnl ***************************************************************************
@@ -16,10 +16,6 @@ dnl Initial setup
 AC_CONFIG_MACRO_DIR([m4])
 m4_ifdef([AM_SILENT_RULES], [AM_SILENT_RULES([yes])])
 AC_CONFIG_HEADERS([config.h])
-
-AC_ARG_WITH([versioned-symbols], AS_HELP_STRING([--with-versioned-symbols],[Use versioned symbols]),[dnl
-vsymldflags="-Wl,--version-script,\${srcdir}/libmongo-client.ver -Wl,-O1"
-],[vsymldflags=])
 
 dnl ***************************************************************************
 dnl Checks for programs.
@@ -40,16 +36,6 @@ dnl ***************************************************************************
 dnl Header checks
 dnl ***************************************************************************
 AC_CHECK_HEADERS([arpa/inet.h fcntl.h netinet/in.h sys/socket.h netdb.h])
-
-AC_CACHE_CHECK(for struct sockaddr_storage, blb_cv_c_struct_sockaddr_storage,
-  [AC_EGREP_HEADER([sockaddr_storage], sys/socket.h, blb_cv_c_struct_sockaddr_storage=yes,blb_cv_c_struct_sockaddr_storage=no)])
-
-if test "$blb_cv_c_struct_sockaddr_storage" = "yes"; then
-	AC_DEFINE(HAVE_STRUCT_SOCKADDR_STORAGE,[1],[struct sockaddr_storage is present on your system])
-fi
-
-AC_CACHE_CHECK(for struct sockaddr_in6, blb_cv_c_struct_sockaddr_in6,
-  [AC_EGREP_HEADER([sockaddr_in6], netinet/in.h, blb_cv_c_struct_sockaddr_in6=yes,blb_cv_c_struct_sockaddr_in6=no)])
 
 AC_EGREP_HEADER([MSG_NOSIGNAL], [sys/socket.h], AC_DEFINE([HAVE_MSG_NOSIGNAL], [1], [Define to 1 when your system supports MSG_NOSIGNAL]))
 
@@ -103,7 +89,7 @@ AC_CHECK_LIB(glib-2.0, g_checksum_new, [glib_checksum="yes"; with_openssl="0"], 
 LIBS=$old_LIBS
 if test "x$glib_checksum" = "xno"; then
   dnl Using the compat stuff disables symbol versioning
-  vsymldflags=""
+  symbol_versioning=no
   PKG_CHECK_MODULES(OPENSSL, openssl >= $OPENSSL_MIN_VERSION,, OPENSSL_LIBS="")
   if test "x$OPENSSL_LIBS" = "x"; then
      AC_MSG_ERROR([OpenSSL is required when glib-2.0 << 2.16.0])
@@ -117,32 +103,33 @@ dnl misc features to be enabled
 dnl ***************************************************************************
 AC_C_INLINE
 
-AC_MSG_CHECKING(whether to enable IPv6 support)
-if test "x$blb_cv_c_struct_sockaddr_in6" = "xyes"; then
-	enable_ipv6=yes
-	AC_MSG_RESULT(yes)
-else
-	enable_ipv6=no
-	AC_MSG_RESULT(no)
+# Check for linker version script support.
+if test "x$symbol_versioning" != "xno"; then
+  ac_save_LDFLAGS=$LDFLAGS
+  AC_CACHE_CHECK(whether $LD supports symbol version scripts,
+          ac_cv_prog_ld_version_script,
+          [ac_cv_prog_ld_version_script=no
+           echo "TEST { local: *; };" > conftest.ver
+           LDFLAGS="$LDFLAGS -Wl,--version-script,conftest.ver"
+           _AC_LINK_IFELSE([AC_LANG_PROGRAM()],
+                  [ac_cv_prog_ld_version_script=yes], [])
+          ])
+  LDFLAGS=$ac_save_LDFLAGS
 fi
-
-AC_MSG_CHECKING([whether to enable symbol versioning])
-AC_SUBST(vsymldflags)
-if test -z "${vsymldflags}"; then
-   AC_MSG_RESULT([no])
-else
-   AC_MSG_RESULT([yes, ${vsymldflags}])
-fi
+AM_CONDITIONAL([HAVE_VERSIONING], [test x$ac_cv_prog_ld_version_script = xyes])
 
 enable_value () {
-   if test -z "$1"; then
-      echo 0
-   else
-      echo 1
-   fi
+   case "$1" in
+        yes|y*)
+                echo 1
+                ;;
+        *)
+                echo 0
+                ;;
+   esac
 }
 
-AC_DEFINE_UNQUOTED(VERSIONED_SYMBOLS, `enable_value ${vsymldflags}`,
+AC_DEFINE_UNQUOTED(VERSIONED_SYMBOLS, `enable_value ${ac_cv_prog_ld_version_script}`,
                    [Define to 1 if symbol versioning is enabled])
 AC_DEFINE_UNQUOTED(PACKAGE, "$PACKAGE", [package name])
 AC_DEFINE_UNQUOTED(VERSION, "$VERSION", [version number])

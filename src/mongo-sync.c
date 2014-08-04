@@ -1,5 +1,5 @@
 /* mongo-sync.c - libmongo-client synchronous wrapper API
- * Copyright 2011, 2012, 2013 Gergely Nagy <algernon@balabit.hu>
+ * Copyright 2011, 2012, 2013, 2014 Gergely Nagy <algernon@balabit.hu>
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -75,22 +75,11 @@ _replica_set_free(replica_set *rs)
   rs->primary = NULL;
 }
 
-
-static gpointer *
-_copy_gchar (gpointer src, gpointer data)
-{
-  gchar *copy;
-
-  copy = g_strdup (src);
-
-  return (gpointer)data;
-}
-
 static GList *
 _list_copy_full (GList *list)
 {
   GList *new_list = NULL;
-  int i;
+  guint i;
 
   for (i = 0; i < g_list_length (list); i++)
     {
@@ -1358,8 +1347,8 @@ mongo_sync_cmd_drop (mongo_sync_connection *conn,
 }
 
 gboolean
-mongo_sync_cmd_get_last_error (mongo_sync_connection *conn,
-                               const gchar *db, gchar **error)
+mongo_sync_cmd_get_last_error_full (mongo_sync_connection *conn,
+                                    const gchar *db, bson **error)
 {
   mongo_packet *p;
   bson *cmd;
@@ -1391,7 +1380,7 @@ mongo_sync_cmd_get_last_error (mongo_sync_connection *conn,
     }
   bson_free (cmd);
 
-  if (!mongo_wire_reply_packet_get_nth_document (p, 1, &cmd))
+  if (!mongo_wire_reply_packet_get_nth_document (p, 1, error))
     {
       int e = errno;
 
@@ -1401,18 +1390,36 @@ mongo_sync_cmd_get_last_error (mongo_sync_connection *conn,
       return FALSE;
     }
   mongo_wire_packet_free (p);
-  bson_finish (cmd);
+  bson_finish (*error);
 
-  if (!_mongo_sync_get_error (cmd, error))
+  return TRUE;
+}
+
+gboolean
+mongo_sync_cmd_get_last_error (mongo_sync_connection *conn,
+                               const gchar *db, gchar **error)
+{
+  bson *err_bson;
+
+  if (!error)
+    {
+      errno = EINVAL;
+      return FALSE;
+    }
+
+  if (!mongo_sync_cmd_get_last_error_full (conn, db, &err_bson))
+    return FALSE;
+    
+  if (!_mongo_sync_get_error (err_bson, error))
     {
       int e = errno;
 
-      bson_free (cmd);
+      bson_free (err_bson);
       errno = e;
       _set_last_error (conn, e);
       return FALSE;
     }
-  bson_free (cmd);
+  bson_free (err_bson);
 
   if (*error == NULL)
     *error = g_strdup (conn->last_error);

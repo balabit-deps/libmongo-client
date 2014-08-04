@@ -13,7 +13,6 @@ test_func_mongo_sync_auto_reconnect_cache (void)
   mongo_sync_connection *conn;
   bson *b;
   mongo_packet *p;
-  GList *hosts;
   gchar *primary_addr;
   const gchar *error_msg;
 

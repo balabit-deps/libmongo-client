@@ -1,5 +1,46 @@
 #+STARTUP: indent showall			-*- org -*-
 
+* 0.1.8 - <2014-05-22 Thu>
+
+** Feature: Connection recovery cache
+
+This new feature makes the replica set support easier to use, and more
+robust. New functions include: `mongo_sync_conn_recovery_cache_new`, 
+`mongo_sync_conn_recovery_cache_free`,
+`mongo_sync_conn_recovery_cache_discard`, 
+`mongo_sync_conn_recovery_cache_seed_add`, and
+`mongo_sync_connect_recovery_cache`.
+
+** New function: mongo_sync_cmd_get_last_error_full
+
+The new `mongo_sync_cmd_get_last_error_full` function can be used to
+retrieve the last server-side error as a full BSON object, not just
+the textual error message.
+
+** New function: mongo_sync_conn_get_last_error
+
+Returns the last cached error message.
+
+** Portability: Test suite improvements
+
+The test suite was improved to work properly on even more platforms.
+
+** Bugfix: Support reconnecting to Unix domain sockets
+
+When a replica-set is set up using unix domain sockets, reconnecting
+failed. This has been corrected in this version.
+
+** Bugfix: Fix random reconnect failures
+
+When reconnecting, only close the old connection if it differs from
+the new one.
+
+** Bugfix: Memory leak in an error-case
+
+When sending a packet to MongoDB, while enforcing being connected to a
+master node, if ensuring that connection failed, memory was leaked.
+The hole has been plugged.
+
 * 0.1.7.1 - <2014-03-12 Wed>
 
 ** Portability: Support HP-UX

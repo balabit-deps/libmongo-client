@@ -6,7 +6,7 @@ before_script:
   - install -d m4
   - autoreconf -i
 script:
-  - ./configure --with-versioned-symbols
+  - ./configure
   - make
   - "export TEST_PRIMARY=localhost:27017"
   - make check

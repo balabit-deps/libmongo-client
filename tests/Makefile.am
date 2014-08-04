@@ -123,6 +123,7 @@ mongo_sync_unit_tests	= \
 		unit/mongo/sync/sync_cmd_exists \
 		unit/mongo/sync/sync_cmd_drop \
 		unit/mongo/sync/sync_cmd_get_last_error \
+		unit/mongo/sync/sync_cmd_get_last_error_full \
 		unit/mongo/sync/sync_cmd_reset_error \
 		unit/mongo/sync/sync_cmd_is_master \
 		unit/mongo/sync/sync_cmd_ping \

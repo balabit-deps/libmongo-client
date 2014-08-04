@@ -1,5 +1,5 @@
 /* mongo-sync.h - libmongo-client synchronous wrapper API
- * Copyright 2011, 2012, 2013 Gergely Nagy <algernon@balabit.hu>
+ * Copyright 2011, 2012, 2013, 2014 Gergely Nagy <algernon@balabit.hu>
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -479,6 +479,22 @@ gboolean mongo_sync_cmd_drop (mongo_sync_connection *conn,
 gboolean mongo_sync_cmd_get_last_error (mongo_sync_connection *conn,
                                         const gchar *db, gchar **error);
 
+/** Get the last error from MongoDB.
+ *
+ * Retrieves the last error from MongoDB.
+ *
+ * @param conn is the connection to work with.
+ * @param db is the name of the database.
+ * @param error is a pointer to a BSON variable that will hold the
+ * error message.
+ *
+ * @returns TRUE if the error was succesfully retrieved, FALSE
+ * otherwise. The output variable @a error is only set if the function
+ * is returning TRUE.
+ */
+gboolean mongo_sync_cmd_get_last_error_full (mongo_sync_connection *conn,
+                                             const gchar *db, bson **error);
+
 /** Reset the last error variable in MongoDB.
  *
  * @param conn is the connection to work with.
@@ -614,7 +630,7 @@ gboolean mongo_sync_cmd_index_drop_all (mongo_sync_connection *conn,
  * @param conn is the connection
  *
  * @returns pointer to the error message, if exists, NULL otherwise
-*/
+ */
 const gchar *mongo_sync_conn_get_last_error (mongo_sync_connection *conn);
 
 /** @} */

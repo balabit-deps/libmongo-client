@@ -1,11 +1,11 @@
-LMC_CURRENT			= 4
-LMC_REVISION			= 1
-LMC_AGE				= 4
+LMC_CURRENT			= 5
+LMC_REVISION			= 0
+LMC_AGE				= 5
 
 lib_LTLIBRARIES			= libmongo-client.la
 libmongo_client_la_LIBADD	= @GLIB_LIBS@ @OPENSSL_LIBS@
 libmongo_client_la_CFLAGS	= @GLIB_CFLAGS@ @OPENSSL_CFLAGS@
-libmongo_client_la_LDFLAGS	= -version-info ${LMC_CURRENT}:${LMC_REVISION}:${LMC_AGE} @vsymldflags@
+libmongo_client_la_LDFLAGS	= -version-info ${LMC_CURRENT}:${LMC_REVISION}:${LMC_AGE}
 
 libmongo_client_la_SOURCES	= \
 	compat.c compat.h \
@@ -28,6 +28,12 @@ libmongo_client_include_HEADERS	= \
 	mongo-sync.h mongo-sync-cursor.h mongo-sync-pool.h \
 	sync-gridfs.h sync-gridfs-chunk.h sync-gridfs-stream.h \
 	mongo.h
+
+if HAVE_VERSIONING
+libmongo_client_la_LDFLAGS += \
+	-Wl,--version-script,$(top_srcdir)/src/libmongo-client.ver
+libmongo_client_la_DEPENDENCIES	= ${top_srcdir}/src/libmongo-client.ver
+endif
 
 pkgconfigdir			= $(libdir)/pkgconfig
 pkgconfig_DATA			= libmongo-client.pc
