@@ -35,5 +35,6 @@ Makefile
 /b/
 /.pc/
 /stamp-h1
-b
-smake/*.pyc
+sbuild/build
+sbuild/*.pyc
+sbuild.py
