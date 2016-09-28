@@ -35,6 +35,6 @@ Makefile
 /b/
 /.pc/
 /stamp-h1
-sbuild/build
-sbuild/*.pyc
+sbuild/*
+!sbuild/config.yml
 sbuild.py
