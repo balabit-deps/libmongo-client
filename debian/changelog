@@ -1,3 +1,9 @@
+libmongo-client (0.1.8-1.syslogng60.1) syslogng60; urgency=low
+
+  * release for syslog-ng-6.0
+
+ -- kokan <peter.kokai@balabit.com>  Thu, 04 Jan 2019 09:00:00 +0100
+
 libmongo-client (0.1.8.syslogng53.2) syslogng53; urgency=low
 
   * release for syslog-ng-5.3.0alpha2
