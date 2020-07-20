@@ -1,3 +1,9 @@
+libmongo-client (0.1.8-1.syslogng60.2) syslogng60; urgency=low
+
+  * bumping because of openssl 1.1.1g upgrade on PE6
+
+ -- Attila Szakacs <attila.szakacs@quest.com>  Mon, 20 Jul 2020 14:13:26 +0200
+
 libmongo-client (0.1.8-1.syslogng60.1) syslogng60; urgency=low
 
   * release for syslog-ng-6.0
